@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lì Xì Điện Tử</title>
+<style>
+    /* CSS còn lại giữ nguyên */
+    .container { display: flex; justify-content: center; align-items: center; }
+    .imageContainer { display: inline-block; }
+    .imageContainer img { width: 200px; height: auto; border-radius: 8px; }
+    .textContainer { padding-left: 20px; }
+    .textOverImage { font-size: 24px; font-weight: bold; color: black; animation: blink 1s infinite; }
+    @keyframes blink {
+        0% { color: red; }
+        50% { color: yellow; }
+        100% { color: red; }
+    }
+    button { padding: 10px 20px; font-size: 16px; margin: 10px; border: none; border-radius: 5px; cursor: pointer; transition: transform 0.3s; }
+    .yesButton { background-color: #4CAF50; color: white; }
+    .noButton { background-color: #f44336; color: white; }
+    .noButton:hover, .yesButton:hover { transform: scale(1.1); }
+    #qrCode { display: none; }
+    .signature { position: fixed; bottom: 10px; right: 10px; color: red; font-weight: bold; }
+</style>
+<script>
+    let clickCount = 0;
+    function showQR() {
+        document.getElementById('question').style.display = 'none';
+        document.getElementById('qrCode').style.display = 'block';
+        document.querySelector('.signature').textContent = 'Chúc mừng bạn đã được lì xì từ Quang Khánh';
+    }
+    function moveButtonAndScaleYes() {
+        clickCount++;
+        const noBtn = document.getElementById('noButton');
+        const yesBtn = document.querySelector('.yesButton');
+        // Điều chỉnh vị trí của nút "Không"
+        if (clickCount < 3) {
+            let newX = Math.random() * window.innerWidth - noBtn.offsetWidth;
+            let newY = Math.random() * window.innerHeight - noBtn.offsetHeight;
+            // Giới hạn vị trí để nút không chạy quá xa
+            newX = Math.max(0, Math.min(newX, window.innerWidth - noBtn.offsetWidth));
+            newY = Math.max(0, Math.min(newY, window.innerHeight - noBtn.offsetHeight));
+
+            noBtn.style.position = 'absolute';
+            noBtn.style.left = `${newX}px`;
+            noBtn.style.top = `${newY}px`;
+
+            // Tăng kích thước nút "Có" mỗi lần nhấn "Không", không đè lên "Không"
+            const scaleAmount = 1.1 + 0.1 * clickCount; // Tăng cỡ lớn hơn mỗi lần nhấn
+            yesBtn.style.transform = `scale(${scaleAmount})`;
+        } else {
+            showQR();
+        }
+    }
+</script>
+</head>
+<body>
+
+<div id="question" class="container">
+    <div class="imageContainer">
+        <img src="https://i.imgur.com/VDmjbkw.jpeg" alt="Happy New Year">
+    </div>
+    <div class="textContainer">
+        <p class="textOverImage">Bạn có muốn lì xì cho mình không?</p>
+        <button class="yesButton" onclick="showQR()">Có</button>
+        <button id="noButton" class="noButton" onclick="moveButtonAndScaleYes()">Không</button>
+    </div>
+</div>
+
+<div id="qrCode">
+    <img src="https://i.imgur.com/5rNrvBm.jpeg" alt="QR Code">
+</div>
+
+<div class="signature">Quang Khánh</div>
+
+</body>
+</html>
